@@ -1,15 +1,31 @@
-Source: template-repository
-Section: unknown
+Source: golang-github-jesseduffield-generics
+Section: golang
 Priority: optional
-Maintainer: Tsic404 <liuheng@deepin.org>
-Build-Depends: debhelper (>= 11)
-Standards-Version: 4.1.3
-Homepage: https://github.com/deepin-community/template-repository
-#Vcs-Browser: https://salsa.debian.org/debian/deepin-community-template-repository
-#Vcs-Git: https://salsa.debian.org/debian/deepin-community-template-repository.git
+Maintainer: Debian Go Packaging Team <team+pkg-go@tracker.debian.org>
+Uploaders:
+ Maytham Alsudany <maytham@debian.org>,
+ Jongmin Kim <jmkim@debian.org>,
+ Ananthu C V <weepingclown@debian.org>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-sequence-golang,
+ golang-any,
+ golang-golang-x-exp-dev,
+ golang-github-wk8-go-ordered-map-dev
+Testsuite: autopkgtest-pkg-go
+Standards-Version: 4.7.2
+Vcs-Browser: https://salsa.debian.org/go-team/packages/golang-github-jesseduffield-generics
+Vcs-Git: https://salsa.debian.org/go-team/packages/golang-github-jesseduffield-generics.git
+Homepage: https://github.com/jesseduffield/generics
+XS-Go-Import-Path: github.com/jesseduffield/generics
 
-Package: template-repository
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Package: golang-github-jesseduffield-generics-dev
+Architecture: all
+Multi-Arch: foreign
+Depends:
+ golang-golang-x-exp-dev,
+ ${misc:Depends},
+Description: extensions on the official Go generics packages (library)
+ This package provides some helper methods/structs that involve generics (added
+ in Go 1.18). Contains helpers for lists, maps, sets, and slices.
