@@ -1,0 +1,59 @@
+From: Maytham Alsudany <maytham@debian.org>
+Forwarded: no
+Description: Update generic types to match Go 1.24
+
+--- a/slices/delegated_sort.go
++++ b/slices/delegated_sort.go
+@@ -14,13 +14,13 @@
+ 
+ // Sort sorts the slice x in ascending order as determined by the less function.
+ // This sort is not guaranteed to be stable.
+-func SortFunc[E any](x []E, less func(a, b E) bool) {
++func SortFunc[E any](x []E, less func(a, b E) int) {
+ 	slices.SortFunc(x, less)
+ }
+ 
+ // SortStable sorts the slice x while keeping the original order of equal
+ // elements, using less to compare elements.
+-func SortStableFunc[E any](x []E, less func(a, b E) bool) {
++func SortStableFunc[E any](x []E, less func(a, b E) int) {
+ 	slices.SortStableFunc(x, less)
+ }
+ 
+@@ -31,7 +31,7 @@
+ 
+ // IsSortedFunc reports whether x is sorted in ascending order, with less as the
+ // comparison function.
+-func IsSortedFunc[E any](x []E, less func(a, b E) bool) bool {
++func IsSortedFunc[E any](x []E, less func(a, b E) int) bool {
+ 	return slices.IsSortedFunc(x, less)
+ }
+ 
+@@ -40,7 +40,7 @@
+ // which it could be inserted into the slice is returned; therefore, if the
+ // intention is to find target itself a separate check for equality with the
+ // element at the returned index is required.
+-func BinarySearch[E constraints.Ordered](x []E, target E) int {
++func BinarySearch[E constraints.Ordered](x []E, target E) (int, bool) {
+ 	return slices.BinarySearch(x, target)
+ }
+ 
+@@ -52,6 +52,6 @@
+ // the first true index. If there is no such index, BinarySearchFunc returns n.
+ // (Note that the "not found" return value is not -1 as in, for instance,
+ // strings.Index.) Search calls ok(i) only for i in the range [0, n).
+-func BinarySearchFunc[E any](x []E, ok func(E) bool) int {
+-	return slices.BinarySearchFunc(x, ok)
++func BinarySearchFunc[E, T any](x []E, target T, cmp func(E, T) int) (int, bool) {
++	return slices.BinarySearchFunc(x, target, cmp)
+ }
+--- a/list/comparable_list.go
++++ b/list/comparable_list.go
+@@ -37,6 +37,6 @@
+ }
+ 
+ // Sorts in-place
+-func (l *ComparableList[T]) SortFunc(test func(a T, b T) bool) {
++func (l *ComparableList[T]) SortFunc(test func(a T, b T) int) {
+ 	slices.SortFunc(l.slice, test)
+ }

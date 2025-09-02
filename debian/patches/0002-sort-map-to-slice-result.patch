@@ -1,0 +1,27 @@
+From: Maytham Alsudany <maytham@debian.org>
+Forwarded: not-needed
+Description: Sort MapToSlice result
+ Test was causing intermittent failures; sometimes it was in the right order,
+ sometimes it wasn't.
+
+--- a/maps/maps_test.go
++++ b/maps/maps_test.go
+@@ -3,6 +3,7 @@
+ import (
+ 	"fmt"
+ 	"testing"
++	"slices"
+ 
+ 	"github.com/jesseduffield/generics/internal/testutils"
+ )
+@@ -100,7 +101,9 @@
+ 		},
+ 	}
+ 	for _, test := range tests {
+-		testutils.ExpectSlice(t, test.expected, MapToSlice(test.hashMap, test.f))
++		result := MapToSlice(test.hashMap, test.f)
++		slices.Sort(result)
++		testutils.ExpectSlice(t, test.expected, result)
+ 	}
+ }
+ 
